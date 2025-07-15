@@ -39,9 +39,6 @@ int main() {
             scores[team].push_back(rank);
         }
 
-        for (auto& [team, score_vec] : scores) {
-            sort(score_vec.begin(), score_vec.end()); // 각 팀 등수 정렬
-        }
 
         vector<pair<int, vector<int>>> vec(scores.begin(), scores.end());
         sort(vec.begin(), vec.end(), cmp);
