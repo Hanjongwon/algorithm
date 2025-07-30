@@ -2,8 +2,8 @@
 #include <string>
 using namespace std;
 
-bool s[21]; // 1~20 인덱스 사용
 int m, x;
+int s = 0; // 집합을 비트로 표현
 string cmd;
 
 int main() {
@@ -13,22 +13,28 @@ int main() {
     cin >> m;
     while (m--) {
         cin >> cmd;
+
         if (cmd == "add") {
             cin >> x;
-            s[x] = true;
-        } else if (cmd == "remove") {
+            s |= (1 << x);
+        }
+        else if (cmd == "remove") {
             cin >> x;
-            s[x] = false;
-        } else if (cmd == "check") {
+            s &= ~(1 << x);
+        }
+        else if (cmd == "check") {
             cin >> x;
-            cout << s[x] << '\n';
-        } else if (cmd == "toggle") {
+            cout << ((s & (1 << x)) ? 1 : 0) << '\n';
+        }
+        else if (cmd == "toggle") {
             cin >> x;
-            s[x] = !s[x];
-        } else if (cmd == "all") {
-            for (int i = 1; i <= 20; i++) s[i] = true;
-        } else if (cmd == "empty") {
-            for (int i = 1; i <= 20; i++) s[i] = false;
+            s ^= (1 << x);
+        }
+        else if (cmd == "all") {
+            s = (1 << 21) - 1; // 1~20까지 비트 on
+        }
+        else if (cmd == "empty") {
+            s = 0;
         }
     }
 }
