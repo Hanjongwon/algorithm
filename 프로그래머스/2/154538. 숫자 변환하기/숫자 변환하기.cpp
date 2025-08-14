@@ -1,29 +1,21 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
+
 using namespace std;
-int visited[1000004];
 
-int bfs(int x, int y, int n) {
-    visited[x] = 1;
-    queue<int> q;
-    q.push(x);
-    
-    while(!q.empty()) {
-        int value = q.front(); q.pop();
-        if (value == y) return visited[value] - 1;
-
-        int next_vals[3] = { value + n, value * 2, value * 3 };
-        for (int i = 0; i < 3; i++) {
-            int nv = next_vals[i];
-            if (nv <= y && visited[nv] == 0) { // 목표 y를 기준으로 범위 제한
-                visited[nv] = visited[value] + 1;
-                q.push(nv);
-            }
-        }
-    }
-    return -1; // 도달 불가
-}
+int dp[1000001];
 
 int solution(int x, int y, int n) {
-    memset(visited, 0, sizeof(visited)); // 방문 배열 초기화
-    return bfs(x, y, n);
+    int answer = 0;
+    fill(dp,dp+1000001, 10000000);
+    dp[x] = 0;
+
+    for(int i = x; i <= y; i++){
+        if(i+n <= y) dp[i+n] = min(dp[i+n],dp[i] + 1);
+        if(i*2 <= y) dp[i*2] = min(dp[i*2], dp[i] + 1);
+        if(i*3 <= y) dp[i*3] = min(dp[i*3], dp[i] + 1);
+    }
+    answer = dp[y];
+    if(answer == 10000000) answer = -1;
+    return answer;
 }
